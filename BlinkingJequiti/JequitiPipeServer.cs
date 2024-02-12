@@ -1,5 +1,8 @@
 ﻿using System.IO.Pipes;
 
+namespace BlinkingJequiti;
+
+
 /// <summary>
 /// Pipe Name = "BlinkingJequiti"
 /// </summary>
@@ -16,7 +19,7 @@ public class JequitiPipeServer : IDisposable
         {
             await pipeServer.WaitForConnectionAsync();
 
-            using StreamReader reader = new (pipeServer);
+            using StreamReader reader = new(pipeServer);
 
             result = reader.ReadLine();
 
@@ -30,7 +33,7 @@ public class JequitiPipeServer : IDisposable
         if (result is not null)
             result = result.ToLower().Trim();
 
-        return result??string.Empty;
+        return result ?? string.Empty;
     }
 
     public void Dispose()
@@ -42,4 +45,3 @@ public class JequitiPipeServer : IDisposable
         GC.SuppressFinalize(this);
     }
 }
-
