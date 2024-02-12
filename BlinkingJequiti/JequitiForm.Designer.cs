@@ -1,6 +1,6 @@
 ﻿namespace BlinkingJequiti
 {
-    partial class Form1
+    partial class JequitiForm
     {
         /// <summary>
         ///  Required designer variable.

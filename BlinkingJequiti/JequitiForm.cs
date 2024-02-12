@@ -1,8 +1,8 @@
 namespace BlinkingJequiti
 {
-    public partial class Form1 : Form
+    public partial class JequitiForm : Form
     {
-        public Form1()
+        public JequitiForm()
         {
             InitializeComponent();
         }
