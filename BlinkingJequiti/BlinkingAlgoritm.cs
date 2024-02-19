@@ -1,4 +1,6 @@
-﻿namespace KernelAgent
+﻿using BlinkingJequiti;
+
+namespace KernelAgent
 {
     public class BlinkingAlgoritm
     {
@@ -7,7 +9,6 @@
 
         static void LoopThroughJequitiBlink()
         {
-
             while (true)
             {
                 Thread.Sleep(new Random()
@@ -17,11 +18,11 @@
             }
         }
 
-        static async void BlinkForm1()
+        public static async void BlinkForm1()
         {
             try
             {
-                using Form1 form1 = new();
+                using JequitiForm form1 = new();
                 form1.Hide();
 
                 await Task.Delay(1000);
@@ -39,9 +40,9 @@
                 form1.Close();
                 form1.Dispose();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
+                //Just Ignore
             }
         }
 
