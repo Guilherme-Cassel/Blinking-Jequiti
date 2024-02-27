@@ -1,50 +1,57 @@
-﻿using BlinkingJequiti;
-
-namespace KernelAgent
+﻿namespace BlinkingJequiti
 {
     public class BlinkingAlgoritm
     {
-        const int OneHourInMiliseconds = 3600000;
-        const int TreeHoursInMilisecons = 10800000;
+        private const int HalfHourInMiliseconds = 5000/*1800000*/;
+        private const int TreeHoursInMilisecons = 10000;
+        private static readonly Random random = new();
+        public string NextBlinkTime { get; private set; } = null!;
 
-        static void LoopThroughJequitiBlink()
+        public async Task Start()
         {
-            while (true)
-            {
-                Thread.Sleep(new Random()
-                    .Next(OneHourInMiliseconds, TreeHoursInMilisecons));
+            var randomDelay = random.Next(HalfHourInMiliseconds, TreeHoursInMilisecons);
 
-                BlinkForm1();
-            }
+            NextBlinkTime = (DateTime.Now.AddMilliseconds(randomDelay)).ToString();
+
+            await LoopThroughJequitiBlink(randomDelay);
         }
 
-        public static async void BlinkForm1()
+        private async Task LoopThroughJequitiBlink(int delay)
         {
-            try
+            await Task.Delay(delay);
+
+            await BlinkForm1();
+
+            await Start();
+        }
+
+        public static async Task BlinkForm1()
+        {
+            await Task.Run(async () =>
             {
-                using JequitiForm form1 = new();
-                form1.Hide();
-
-                await Task.Delay(1000);
-
-                if (form1.InvokeRequired)
+                try
                 {
-                    form1.Invoke(new Action(BlinkForm1));
-                    return;
+                    using JequitiForm form = new();
+
+                    if (form.InvokeRequired)
+                    {
+                        await form.Invoke(async () => await BlinkForm1());
+                        return;
+                    }
+
+                    Task.Delay(1000).Wait();
+
+                    form.Visible = true;
+
+                    Task.Delay(100).Wait();
+
+                    form.Visible = false;
                 }
-
-                form1.Visible = true;
-                await Task.Delay(100);
-                form1.Visible = false;
-
-                form1.Close();
-                form1.Dispose();
-            }
-            catch (Exception)
-            {
-                //Just Ignore
-            }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            });
         }
-
     }
 }

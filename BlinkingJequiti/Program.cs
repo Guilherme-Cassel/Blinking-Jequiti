@@ -1,26 +1,32 @@
-using KernelAgent;
-
 namespace BlinkingJequiti;
 
-internal static class Program
+public class Program
 {
-    static void Main()
+    public string NextBlink { get; set; }
+
+    static async Task Main()
     {
-        ApplicationConfiguration.Initialize();
+        JequitiForm form = new JequitiForm();
+        form.ShowDialog();
 
-        //InitializeApp();
+        Thread.Sleep(1000);
 
-        Application.Run();
+        form.Close();
 
-        BlinkingAlgoritm.BlinkForm1();
+        return;
+
+        BlinkingAlgoritm blinkingAlgoritm = new();
+
+        await blinkingAlgoritm.Start();
+
+        MessageBox.Show(blinkingAlgoritm.NextBlinkTime);
     }
-    static void InitializeApp()
+    private static async Task InitializeApp()
     {
         EnsureSingleInstance();
     }
 
-
-    static void EnsureSingleInstance()
+    private static void EnsureSingleInstance()
     {
         Mutex singleton = new Mutex(true, AppDomain.CurrentDomain.FriendlyName);
 
