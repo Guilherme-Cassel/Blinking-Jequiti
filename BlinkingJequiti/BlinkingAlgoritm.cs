@@ -2,30 +2,30 @@
 {
     public class BlinkingAlgoritm
     {
-        private const int HalfHourInMiliseconds = 5000/*1800000*/;
-        private const int TreeHoursInMilisecons = 10000;
+        private const int HalfHourInMiliseconds = 1800000;
+        private const int TreeHoursInMilisecons = 3600000;
         private static readonly Random random = new();
         public string NextBlinkTime { get; private set; } = null!;
 
-        public async Task Start()
+        public async void Start()
         {
             var randomDelay = random.Next(HalfHourInMiliseconds, TreeHoursInMilisecons);
 
             NextBlinkTime = (DateTime.Now.AddMilliseconds(randomDelay)).ToString();
 
-            await LoopThroughJequitiBlink(randomDelay);
+            await ScheduleJequitiBlink(randomDelay);
         }
 
-        private async Task LoopThroughJequitiBlink(int delay)
+        private async Task ScheduleJequitiBlink(int delay)
         {
             await Task.Delay(delay);
 
-            await BlinkForm1();
+            await BlinkForm();
 
-            await Start();
+            Start();
         }
 
-        public static async Task BlinkForm1()
+        public static async Task BlinkForm()
         {
             await Task.Run(async () =>
             {
@@ -35,7 +35,7 @@
 
                     if (form.InvokeRequired)
                     {
-                        await form.Invoke(async () => await BlinkForm1());
+                        await form.Invoke(async () => await BlinkForm());
                         return;
                     }
 

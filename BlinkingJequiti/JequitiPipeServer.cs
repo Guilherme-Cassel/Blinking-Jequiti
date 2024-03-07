@@ -11,9 +11,16 @@ public class JequitiPipeServer : IDisposable
     private const string PipeName = "BlinkingJequiti";
     private readonly NamedPipeServerStream pipeServer = new(PipeName, PipeDirection.InOut);
 
+    public void Dispose()
+    {
+        GC.WaitForPendingFinalizers();
+        GC.SuppressFinalize(this);
+        GC.Collect();
+    }
+
     internal async Task<string?> StartReading()
     {
-        string? result = string.Empty;
+        string? args = string.Empty;
 
         try
         {
@@ -21,7 +28,7 @@ public class JequitiPipeServer : IDisposable
 
             using StreamReader reader = new(pipeServer);
 
-            result = reader.ReadLine();
+            args = reader.ReadLine();
 
             reader.Close();
         }
@@ -30,18 +37,9 @@ public class JequitiPipeServer : IDisposable
             MessageBox.Show("Erro: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        if (result is not null)
-            result = result.ToLower().Trim();
+        if (args is not null)
+            args = args.ToLower().Trim();
 
-        return result ?? string.Empty;
-    }
-
-    public void Dispose()
-    {
-        pipeServer.Close();
-        pipeServer.Dispose();
-        GC.Collect();
-        GC.WaitForPendingFinalizers();
-        GC.SuppressFinalize(this);
+        return args ?? string.Empty;
     }
 }
