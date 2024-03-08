@@ -22,7 +22,10 @@
 
             if (!UserState.IsConnected)
             {
-                while (!UserState.IsConnected) await Task.Delay(1000);
+                while (!UserState.IsConnected)
+                {
+                    await Task.Delay(1000);
+                }
 
                 await Task.Delay(30000);
             }
