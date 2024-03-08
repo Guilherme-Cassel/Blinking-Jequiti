@@ -6,22 +6,14 @@ namespace BlinkingJequiti;
 /// <summary>
 /// Pipe Name = "BlinkingJequiti"
 /// </summary>
-public class JequitiPipeServer : IDisposable
+public static class JequitiPipeServer
 {
     private const string PipeName = "BlinkingJequiti";
-    private readonly NamedPipeServerStream pipeServer = new(PipeName, PipeDirection.InOut);
-
-    public void Dispose()
-    {
-        GC.WaitForPendingFinalizers();
-        GC.SuppressFinalize(this);
-        GC.Collect();
-    }
-
-    internal async Task<string?> StartReading()
+    public static async Task<string?> StartReading()
     {
         string? args = string.Empty;
 
+        using NamedPipeServerStream pipeServer = new(PipeName, PipeDirection.InOut);
         try
         {
             await pipeServer.WaitForConnectionAsync();
@@ -36,10 +28,14 @@ public class JequitiPipeServer : IDisposable
         {
             MessageBox.Show("Erro: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        finally
+        {
+            await pipeServer.DisposeAsync();
+        }
 
         if (args is not null)
             args = args.ToLower().Trim();
 
-        return args ?? string.Empty;
+        return args;
     }
 }

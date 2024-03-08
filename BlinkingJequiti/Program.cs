@@ -1,39 +1,71 @@
-namespace BlinkingJequiti;
+using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
-public class Program
+namespace BlinkingJequiti
 {
-    public string NextBlink { get; set; }
-
-    static async Task Main()
+    public class Program
     {
-        JequitiForm form = new JequitiForm();
-        form.ShowDialog();
-
-        Thread.Sleep(1000);
-
-        form.Close();
-
-        return;
-
-        BlinkingAlgoritm blinkingAlgoritm = new();
-
-        await blinkingAlgoritm.Start();
-
-        MessageBox.Show(blinkingAlgoritm.NextBlinkTime);
-    }
-    private static async Task InitializeApp()
-    {
-        EnsureSingleInstance();
-    }
-
-    private static void EnsureSingleInstance()
-    {
-        Mutex singleton = new Mutex(true, AppDomain.CurrentDomain.FriendlyName);
-
-        if (!singleton.WaitOne(TimeSpan.Zero, true))
+        private static async Task Main()
         {
-            //there is already another instance running!
-            Environment.Exit(0);
+            EnsureSingleInstance();
+            await InitializeApp();
+        }
+
+        private static void EnsureSingleInstance()
+        {
+            if (!(new Mutex(true, AppDomain.CurrentDomain.FriendlyName)).WaitOne(TimeSpan.Zero, true))
+            {
+                Environment.Exit(0);
+            }
+        }
+
+        private static async Task InitializeApp()
+        {
+            BlinkingAlgoritm.Start();
+            await StartPipeLine();
+        }
+
+        private static async Task StartPipeLine()
+        {
+            while (true)
+            {
+                string? args = null;
+
+                try
+                {
+                    args = await JequitiPipeServer.StartReading();
+
+                    if (args is null)
+                        continue;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    await RunScript(args!);
+                }
+            }
+        }
+
+        private static async Task RunScript(string args)
+        {
+            if (args == null)
+                return;
+
+            if (args == "show")
+            {
+                MessageBox.Show(BlinkingAlgoritm.NextBlinkTime);
+            }
+            else if (args == "blink")
+            {
+                await BlinkingAlgoritm.BlinkForm();
+            }
         }
     }
 }
