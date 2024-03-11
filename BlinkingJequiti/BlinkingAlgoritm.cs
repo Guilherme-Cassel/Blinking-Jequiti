@@ -1,10 +1,13 @@
-﻿namespace BlinkingJequiti
+﻿using System.Threading;
+
+namespace BlinkingJequiti
 {
     public static class BlinkingAlgoritm
     {
         private const int HalfHourInMiliseconds = 1800000;
         private const int TreeHoursInMilisecons = 3600000;
         private static readonly Random random = new();
+        private static CancellationTokenSource cancellationTokenSource = new();
         public static string NextBlinkTime { get; private set; } = null!;
 
         public static async void Start()
@@ -16,9 +19,28 @@
             await ScheduleJequitiBlink(randomDelay);
         }
 
+        public static void Restart()
+        {
+            cancellationTokenSource = new CancellationTokenSource();
+            Start();
+        }
+
+        public static void Stop()
+        {
+            NextBlinkTime = "Blinking is Paused!";
+            cancellationTokenSource.Cancel();
+        }
+
         private static async Task ScheduleJequitiBlink(int delay)
         {
-            await Task.Delay(delay);
+            try
+            {
+                await Task.Delay(delay, cancellationTokenSource.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                return;
+            }
 
             if (!UserState.IsConnected)
             {
@@ -30,12 +52,12 @@
                 await Task.Delay(30000);
             }
 
-            await BlinkForm();
+            await Blink();
 
             Start();
         }
 
-        public static async Task BlinkForm()
+        public static async Task Blink()
         {
             await Task.Run(async () =>
             {
@@ -45,7 +67,7 @@
 
                     if (form.InvokeRequired)
                     {
-                        await form.Invoke(async () => await BlinkForm());
+                        await form.Invoke(async () => await Blink());
                         return;
                     }
 

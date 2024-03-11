@@ -1,18 +1,18 @@
-using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace BlinkingJequiti
 {
     public class Program
     {
-        private static async Task Main()
+        public static Thread Blinking = new(BlinkingAlgoritm.Start);
+        public static Thread PipeLine = new(StartPipeLine);
+
+        private static void Main()
         {
+            Application.EnableVisualStyles();
+
             EnsureSingleInstance();
-            await InitializeApp();
+            InitializeApp();
+
+            Application.Run();
         }
 
         private static void EnsureSingleInstance()
@@ -23,13 +23,13 @@ namespace BlinkingJequiti
             }
         }
 
-        private static async Task InitializeApp()
+        private static void InitializeApp()
         {
-            BlinkingAlgoritm.Start();
-            await StartPipeLine();
+            Blinking.Start();
+            PipeLine.Start();
         }
 
-        private static async Task StartPipeLine()
+        private static async void StartPipeLine()
         {
             while (true)
             {
@@ -60,11 +60,12 @@ namespace BlinkingJequiti
 
             if (args == "show")
             {
-                MessageBox.Show(BlinkingAlgoritm.NextBlinkTime);
+                using FormMenu formMenu = new();
+                formMenu.ShowDialog();
             }
             else if (args == "blink")
             {
-                await BlinkingAlgoritm.BlinkForm();
+                await BlinkingAlgoritm.Blink();
             }
         }
     }
