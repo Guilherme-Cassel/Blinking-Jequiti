@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace BlinkingJequiti
 {
     public class Program
@@ -7,12 +9,16 @@ namespace BlinkingJequiti
 
         private static void Main()
         {
-            Application.EnableVisualStyles();
+            Process thisProc = Process.GetCurrentProcess();
+            thisProc.StartInfo.Verb = "runas";
+            thisProc.StartInfo.UseShellExecute = true;
+            JequitiPipeServer.CreateBat();
+            //Application.EnableVisualStyles();
 
-            EnsureSingleInstance();
-            InitializeApp();
+            //EnsureSingleInstance();
+            //InitializeApp();
 
-            Application.Run();
+            //Application.Run();
         }
 
         private static void EnsureSingleInstance()

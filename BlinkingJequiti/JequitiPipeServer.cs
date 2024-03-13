@@ -1,7 +1,7 @@
-﻿using System.IO.Pipes;
+﻿using System.Diagnostics;
+using System.IO.Pipes;
 
 namespace BlinkingJequiti;
-
 
 /// <summary>
 /// Pipe Name = "BlinkingJequiti"
@@ -9,6 +9,19 @@ namespace BlinkingJequiti;
 public static class JequitiPipeServer
 {
     private const string PipeName = "BlinkingJequiti";
+    private const string PipeShortCutText =
+        """
+        @echo off
+        echo %* > \\.\pipe\BlinkingJequiti
+        """;
+
+    public static void CreateBat()
+    {
+        string filePath = Path.Combine(Environment.SystemDirectory, $"{PipeName}.bat");
+        File.WriteAllText(filePath, PipeShortCutText);
+    }
+
+
     public static async Task<string?> StartReading()
     {
         string? args = string.Empty;
