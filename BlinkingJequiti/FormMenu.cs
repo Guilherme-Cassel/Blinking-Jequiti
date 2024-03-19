@@ -1,4 +1,6 @@
-﻿namespace BlinkingJequiti
+﻿using System.Diagnostics;
+
+namespace BlinkingJequiti
 {
     public partial class FormMenu : Form
     {
@@ -7,19 +9,27 @@
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ButtonStopCounter_Click(object sender, EventArgs e)
         {
             BlinkingAlgoritm.Stop();
+            UpdateDisplay(false);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ButtonQuitApplication_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("next blink: " + BlinkingAlgoritm.NextBlinkTime);
+            Process.GetCurrentProcess().Kill();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void ButtonRestartCounter_Click(object sender, EventArgs e)
         {
             BlinkingAlgoritm.Restart();
+            UpdateDisplay(true);
+        }
+
+        private void UpdateDisplay(bool running)
+        {
+            LabelNextBlink.Text = BlinkingAlgoritm.NextBlinkTime;
+            if (running) BackColor = Color.LightBlue; else BackColor = Color.LightSalmon;
         }
     }
 }

@@ -28,76 +28,81 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            button1 = new Button();
+            ButtonPauseCounter = new Button();
             button2 = new Button();
-            button3 = new Button();
-            label1 = new Label();
-            bindingSource1 = new BindingSource(components);
-            ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
+            ButtonRestartCounter = new Button();
+            LabelNextBlink = new Label();
             SuspendLayout();
             // 
-            // button1
+            // ButtonPauseCounter
             // 
-            button1.Location = new Point(435, 157);
-            button1.Name = "button1";
-            button1.Size = new Size(186, 86);
-            button1.TabIndex = 0;
-            button1.Text = "pause";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            ButtonPauseCounter.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ButtonPauseCounter.BackColor = Color.FromArgb(255, 128, 128);
+            ButtonPauseCounter.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ButtonPauseCounter.Location = new Point(329, 174);
+            ButtonPauseCounter.Name = "ButtonPauseCounter";
+            ButtonPauseCounter.Size = new Size(180, 80);
+            ButtonPauseCounter.TabIndex = 0;
+            ButtonPauseCounter.Text = "Pause Counter";
+            ButtonPauseCounter.UseVisualStyleBackColor = false;
+            ButtonPauseCounter.Click += ButtonStopCounter_Click;
             // 
             // button2
             // 
-            button2.Location = new Point(162, 208);
+            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button2.BackColor = Color.Red;
+            button2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button2.Location = new Point(12, 257);
             button2.Name = "button2";
-            button2.Size = new Size(186, 86);
+            button2.Size = new Size(180, 80);
             button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            button2.Text = "Quit Application";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += ButtonQuitApplication_Click;
             // 
-            // button3
+            // ButtonRestartCounter
             // 
-            button3.Location = new Point(435, 249);
-            button3.Name = "button3";
-            button3.Size = new Size(186, 86);
-            button3.TabIndex = 2;
-            button3.Text = "Restart";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            ButtonRestartCounter.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            ButtonRestartCounter.BackColor = Color.FromArgb(128, 255, 128);
+            ButtonRestartCounter.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ButtonRestartCounter.Location = new Point(329, 260);
+            ButtonRestartCounter.Name = "ButtonRestartCounter";
+            ButtonRestartCounter.Size = new Size(180, 80);
+            ButtonRestartCounter.TabIndex = 2;
+            ButtonRestartCounter.Text = "Restart Counter";
+            ButtonRestartCounter.UseVisualStyleBackColor = false;
+            ButtonRestartCounter.Click += ButtonRestartCounter_Click;
             // 
-            // label1
+            // LabelNextBlink
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(360, 62);
-            label1.Name = "label1";
-            label1.Size = new Size(38, 15);
-            label1.TabIndex = 3;
-            label1.Text = "label1";
+            LabelNextBlink.AutoSize = true;
+            LabelNextBlink.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            LabelNextBlink.Location = new Point(212, 63);
+            LabelNextBlink.Name = "LabelNextBlink";
+            LabelNextBlink.Size = new Size(78, 32);
+            LabelNextBlink.TabIndex = 3;
+            LabelNextBlink.Text = "label1";
             // 
             // FormMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(label1);
-            Controls.Add(button3);
+            ClientSize = new Size(521, 352);
+            Controls.Add(LabelNextBlink);
+            Controls.Add(ButtonRestartCounter);
             Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(ButtonPauseCounter);
             Name = "FormMenu";
-            Text = "FormMenu";
-            ((System.ComponentModel.ISupportInitialize)bindingSource1).EndInit();
+            Text = "BlinkingJequiti Menu";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button button1;
+        private Button ButtonPauseCounter;
         private Button button2;
-        private Button button3;
-        private Label label1;
-        private BindingSource bindingSource1;
+        private Button ButtonRestartCounter;
+        private Label LabelNextBlink;
     }
 }

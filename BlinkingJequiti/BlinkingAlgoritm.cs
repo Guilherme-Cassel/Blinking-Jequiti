@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.ComponentModel;
+using System.Threading;
 
 namespace BlinkingJequiti
 {
@@ -8,6 +9,8 @@ namespace BlinkingJequiti
         private const int TreeHoursInMilisecons = 3600000;
         private static readonly Random random = new();
         private static CancellationTokenSource cancellationTokenSource = new();
+
+        [Bindable(true)]
         public static string NextBlinkTime { get; private set; } = null!;
 
         public static async void Start()
