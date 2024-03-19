@@ -9,16 +9,12 @@ namespace BlinkingJequiti
 
         private static void Main()
         {
-            Process thisProc = Process.GetCurrentProcess();
-            thisProc.StartInfo.Verb = "runas";
-            thisProc.StartInfo.UseShellExecute = true;
-            JequitiPipeServer.CreateBat();
-            //Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
 
-            //EnsureSingleInstance();
-            //InitializeApp();
+            EnsureSingleInstance();
+            InitializeApp();
 
-            //Application.Run();
+            Application.Run();
         }
 
         private static void EnsureSingleInstance()
@@ -37,9 +33,11 @@ namespace BlinkingJequiti
 
         private static async void StartPipeLine()
         {
+            string? args;
+
             while (true)
             {
-                string? args = null;
+                args = null;
 
                 try
                 {
