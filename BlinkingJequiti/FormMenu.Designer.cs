@@ -75,13 +75,13 @@
             // 
             // LabelNextBlink
             // 
-            LabelNextBlink.AutoSize = true;
             LabelNextBlink.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            LabelNextBlink.Location = new Point(212, 63);
+            LabelNextBlink.Location = new Point(12, 43);
             LabelNextBlink.Name = "LabelNextBlink";
-            LabelNextBlink.Size = new Size(78, 32);
+            LabelNextBlink.Size = new Size(497, 52);
             LabelNextBlink.TabIndex = 3;
-            LabelNextBlink.Text = "label1";
+            LabelNextBlink.Text = "Blinking Status";
+            LabelNextBlink.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // FormMenu
             // 
@@ -93,9 +93,9 @@
             Controls.Add(button2);
             Controls.Add(ButtonPauseCounter);
             Name = "FormMenu";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "BlinkingJequiti Menu";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

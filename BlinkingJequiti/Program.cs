@@ -5,7 +5,6 @@ namespace BlinkingJequiti
     public class Program
     {
         public static Thread Blinking = new(BlinkingAlgoritm.Start);
-        public static Thread PipeLine = new(StartPipeLine);
 
         private static void Main()
         {
@@ -28,7 +27,7 @@ namespace BlinkingJequiti
         private static void InitializeApp()
         {
             Blinking.Start();
-            PipeLine.Start();
+            StartPipeLine();
         }
 
         private static async void StartPipeLine()
@@ -41,14 +40,18 @@ namespace BlinkingJequiti
 
                 try
                 {
+                    JequitiPipeServer.CreateBat();
+
                     args = await JequitiPipeServer.StartReading();
+
+                    JequitiPipeServer.DeleteBat();
 
                     if (args is null)
                         continue;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    MessageBox.Show(ex.Message);
+                    continue;
                 }
                 finally
                 {
@@ -59,9 +62,6 @@ namespace BlinkingJequiti
 
         private static async Task RunScript(string args)
         {
-            if (args == null)
-                return;
-
             if (args == "show")
             {
                 using FormMenu formMenu = new();
@@ -70,6 +70,10 @@ namespace BlinkingJequiti
             else if (args == "blink")
             {
                 await BlinkingAlgoritm.Blink();
+            }
+            else
+            {
+                return;
             }
         }
     }

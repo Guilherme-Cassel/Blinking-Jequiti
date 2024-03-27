@@ -4,7 +4,7 @@ namespace BlinkingJequiti;
 
 public partial class UserState
 {
-    public static bool IsConnected => UserInactiveTime() < 5;
+    public static bool IsConnected => UserInactiveTime() < 10;
     private static int UserInactiveTime()
     {
         uint idleTicks = 0;

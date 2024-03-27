@@ -7,12 +7,14 @@ namespace BlinkingJequiti
         public FormMenu()
         {
             InitializeComponent();
+            UpdateDisplay();
+            Focus();
         }
 
         private void ButtonStopCounter_Click(object sender, EventArgs e)
         {
             BlinkingAlgoritm.Stop();
-            UpdateDisplay(false);
+            UpdateDisplay();
         }
 
         private void ButtonQuitApplication_Click(object sender, EventArgs e)
@@ -23,13 +25,14 @@ namespace BlinkingJequiti
         private void ButtonRestartCounter_Click(object sender, EventArgs e)
         {
             BlinkingAlgoritm.Restart();
-            UpdateDisplay(true);
+            UpdateDisplay();
         }
 
-        private void UpdateDisplay(bool running)
+        private void UpdateDisplay()
         {
             LabelNextBlink.Text = BlinkingAlgoritm.NextBlinkTime;
-            if (running) BackColor = Color.LightBlue; else BackColor = Color.LightSalmon;
+            if (BlinkingAlgoritm.cancellationTokenSource.IsCancellationRequested) BackColor = Color.LightSalmon; 
+            else BackColor = Color.LightBlue;
         }
     }
 }

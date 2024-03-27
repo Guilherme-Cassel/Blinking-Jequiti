@@ -1,17 +1,15 @@
-﻿using System.ComponentModel;
-using System.Threading;
-
-namespace BlinkingJequiti
+﻿namespace BlinkingJequiti
 {
     public static class BlinkingAlgoritm
     {
         private const int HalfHourInMiliseconds = 1800000;
-        private const int TreeHoursInMilisecons = 3600000;
-        private static readonly Random random = new();
-        private static CancellationTokenSource cancellationTokenSource = new();
 
-        [Bindable(true)]
+        private const int TreeHoursInMilisecons = 3600000;
         public static string NextBlinkTime { get; private set; } = null!;
+
+        private static readonly Random random = new();
+
+        public static CancellationTokenSource cancellationTokenSource = new();
 
         public static async void Start()
         {
@@ -49,7 +47,7 @@ namespace BlinkingJequiti
             {
                 while (!UserState.IsConnected)
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(3000);
                 }
 
                 await Task.Delay(30000);
@@ -78,7 +76,7 @@ namespace BlinkingJequiti
 
                     form.Visible = true;
 
-                    Task.Delay(100).Wait();
+                    Task.Delay(50).Wait();
 
                     form.Visible = false;
                 }
