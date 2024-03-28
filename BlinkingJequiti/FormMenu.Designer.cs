@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             ButtonPauseCounter = new Button();
-            button2 = new Button();
+            ButtonQuitApplication = new Button();
             ButtonRestartCounter = new Button();
             LabelNextBlink = new Label();
+            ButtonBlink = new Button();
             SuspendLayout();
             // 
             // ButtonPauseCounter
@@ -47,18 +48,18 @@
             ButtonPauseCounter.UseVisualStyleBackColor = false;
             ButtonPauseCounter.Click += ButtonStopCounter_Click;
             // 
-            // button2
+            // ButtonQuitApplication
             // 
-            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button2.BackColor = Color.Red;
-            button2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button2.Location = new Point(12, 257);
-            button2.Name = "button2";
-            button2.Size = new Size(180, 80);
-            button2.TabIndex = 1;
-            button2.Text = "Quit Application";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += ButtonQuitApplication_Click;
+            ButtonQuitApplication.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            ButtonQuitApplication.BackColor = Color.Red;
+            ButtonQuitApplication.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ButtonQuitApplication.Location = new Point(12, 257);
+            ButtonQuitApplication.Name = "ButtonQuitApplication";
+            ButtonQuitApplication.Size = new Size(180, 80);
+            ButtonQuitApplication.TabIndex = 1;
+            ButtonQuitApplication.Text = "Quit Application";
+            ButtonQuitApplication.UseVisualStyleBackColor = false;
+            ButtonQuitApplication.Click += ButtonQuitApplication_Click;
             // 
             // ButtonRestartCounter
             // 
@@ -83,14 +84,28 @@
             LabelNextBlink.Text = "Blinking Status";
             LabelNextBlink.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // ButtonBlink
+            // 
+            ButtonBlink.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            ButtonBlink.BackColor = Color.DeepSkyBlue;
+            ButtonBlink.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ButtonBlink.Location = new Point(12, 171);
+            ButtonBlink.Name = "ButtonBlink";
+            ButtonBlink.Size = new Size(180, 80);
+            ButtonBlink.TabIndex = 4;
+            ButtonBlink.Text = "Blink";
+            ButtonBlink.UseVisualStyleBackColor = false;
+            ButtonBlink.Click += ButtonBlink_Click;
+            // 
             // FormMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(521, 352);
+            Controls.Add(ButtonBlink);
             Controls.Add(LabelNextBlink);
             Controls.Add(ButtonRestartCounter);
-            Controls.Add(button2);
+            Controls.Add(ButtonQuitApplication);
             Controls.Add(ButtonPauseCounter);
             Name = "FormMenu";
             StartPosition = FormStartPosition.CenterScreen;
@@ -101,8 +116,9 @@
         #endregion
 
         private Button ButtonPauseCounter;
-        private Button button2;
+        private Button ButtonQuitApplication;
         private Button ButtonRestartCounter;
         private Label LabelNextBlink;
+        private Button ButtonBlink;
     }
 }
