@@ -8,7 +8,13 @@ namespace BlinkingJequiti
         {
             InitializeComponent();
             UpdateDisplay();
+            Shown += FormMenu_Shown;
+        }
+
+        private void FormMenu_Shown(object? sender, EventArgs e)
+        {
             Focus();
+            BringToFront();
         }
 
         private void ButtonStopCounter_Click(object sender, EventArgs e)
@@ -30,7 +36,7 @@ namespace BlinkingJequiti
 
         private async void ButtonBlink_Click(object sender, EventArgs e)
         {
-            CancellationTokenSource cts = new ();
+            CancellationTokenSource cts = new();
             try
             {
                 ButtonBlink.Enabled = false;
@@ -45,7 +51,7 @@ namespace BlinkingJequiti
                 await cts.CancelAsync();
                 MessageBox.Show($"Error Message:\n\n{ex}", "Error While Executing Blink");
             }
-            
+
         }
 
         private void UpdateDisplay()

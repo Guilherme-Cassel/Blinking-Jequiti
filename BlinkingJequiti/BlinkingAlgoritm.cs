@@ -22,6 +22,7 @@
 
         public static void Restart()
         {
+            if (!cancellationTokenSource.IsCancellationRequested) return;
             cancellationTokenSource = new CancellationTokenSource();
             Start();
         }
