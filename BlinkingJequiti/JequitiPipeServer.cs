@@ -34,7 +34,7 @@ public static class JequitiPipeServer
 
         bool isArgumentNullOrBlank()
         {
-            if (args is null) return true;
+            if (string.IsNullOrWhiteSpace(args)) return true;
 
             string base64NullCallingResponse = "RUNITyBlc3Tvv70gZGVzYXRpdmFkby4=";
             byte[] argsBytes = Encoding.UTF8.GetBytes(args);
