@@ -7,29 +7,31 @@
         private const int TreeHoursInMilisecons = 3600000;
         public static string NextBlinkTime { get; private set; } = null!;
 
-        private static readonly Random random = new();
-
         public static CancellationTokenSource cancellationTokenSource = new();
 
         public static async void Start()
         {
+            Random random = new();
+
             var randomDelay = random.Next(HalfHourInMiliseconds, TreeHoursInMilisecons);
 
-            NextBlinkTime = DateTime.Now.AddMilliseconds(randomDelay).ToString();
+            NextBlinkTime = "Next Blink: " + DateTime.Now.AddMilliseconds(randomDelay).ToString("HH:mm:ss");
 
-            await ScheduleJequitiBlink(randomDelay);
+            _ = ScheduleJequitiBlink(randomDelay);
         }
 
         public static void Restart()
         {
             if (!cancellationTokenSource.IsCancellationRequested) return;
+
             cancellationTokenSource = new CancellationTokenSource();
+
             Start();
         }
 
         public static void Stop()
         {
-            NextBlinkTime = "Blinking is Paused!";
+            NextBlinkTime = "Off";
             cancellationTokenSource.Cancel();
         }
 
