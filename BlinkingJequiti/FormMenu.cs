@@ -8,6 +8,7 @@ namespace BlinkingJequiti
         {
             InitializeComponent();
             UpdateDisplay();
+
             Shown += FormMenu_Shown;
         }
 
@@ -51,7 +52,6 @@ namespace BlinkingJequiti
                 await cts.CancelAsync();
                 MessageBox.Show($"Error Message:\n\n{ex}", "Error While Executing Blink");
             }
-
         }
 
         private void UpdateDisplay()

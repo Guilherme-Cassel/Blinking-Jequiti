@@ -9,7 +9,7 @@
 
         public static CancellationTokenSource cancellationTokenSource = new();
 
-        public static async void Start()
+        public static void Start()
         {
             Random random = new();
 
