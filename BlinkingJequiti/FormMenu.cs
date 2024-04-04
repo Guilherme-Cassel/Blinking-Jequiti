@@ -57,8 +57,9 @@ namespace BlinkingJequiti
         private void UpdateDisplay()
         {
             LabelNextBlink.Text = BlinkingAlgoritm.NextBlinkTime;
-            if (BlinkingAlgoritm.cancellationTokenSource.IsCancellationRequested) BackColor = Color.LightSalmon;
-            else BackColor = Color.LightBlue;
+
+            if (BlinkingAlgoritm.IsOn) BackColor = Color.LightBlue;
+            else BackColor = Color.LightSalmon;
         }
     }
 }

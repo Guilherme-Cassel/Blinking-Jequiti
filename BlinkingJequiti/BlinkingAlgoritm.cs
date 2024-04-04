@@ -1,93 +1,105 @@
-﻿namespace BlinkingJequiti
+﻿namespace BlinkingJequiti;
+
+public static class BlinkingAlgoritm
 {
-    public static class BlinkingAlgoritm
+    private const int HalfHourInMiliseconds = 1800000;
+
+    private const int TreeHoursInMilisecons = 10800000;
+
+    private static CancellationTokenSource cancellationTokenSource = new();
+
+    public static bool IsOn => !cancellationTokenSource.IsCancellationRequested;
+
+    public static string NextBlinkTime { get; private set; } = null!;
+
+    public static void Start()
     {
-        private const int HalfHourInMiliseconds = 1800000;
+        var randomDelay = new Random().Next(HalfHourInMiliseconds, TreeHoursInMilisecons);
 
-        private const int TreeHoursInMilisecons = 3600000;
-        public static string NextBlinkTime { get; private set; } = null!;
+        NextBlinkTime = "Next Blink: " + DateTime.Now.AddMilliseconds(randomDelay).ToString("HH:mm:ss");
 
-        public static CancellationTokenSource cancellationTokenSource = new();
+        _ = ScheduleJequitiBlink(randomDelay);
+    }
 
-        public static void Start()
+    public static void Restart()
+    {
+        if (!cancellationTokenSource.IsCancellationRequested) return;
+
+        cancellationTokenSource = new CancellationTokenSource();
+
+        Start();
+    }
+
+    public static void Stop()
+    {
+        NextBlinkTime = "Off";
+        cancellationTokenSource.Cancel();
+    }
+
+    private static async Task ScheduleJequitiBlink(int delay)
+    {
+        try
         {
-            Random random = new();
-
-            var randomDelay = random.Next(HalfHourInMiliseconds, TreeHoursInMilisecons);
-
-            NextBlinkTime = "Next Blink: " + DateTime.Now.AddMilliseconds(randomDelay).ToString("HH:mm:ss");
-
-            _ = ScheduleJequitiBlink(randomDelay);
+            await Task.Delay(delay, cancellationTokenSource.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
         }
 
-        public static void Restart()
+        await WaitForUserActivity();
+
+        await Blink();
+
+        Start();
+    }
+
+    private static async Task WaitForUserActivity()
+    {
+        if (UserState.IsConnected)
+            return;
+
+        while (!UserState.IsConnected)
         {
-            if (!cancellationTokenSource.IsCancellationRequested) return;
-
-            cancellationTokenSource = new CancellationTokenSource();
-
-            Start();
+            await Task.Delay(3000);
         }
 
-        public static void Stop()
-        {
-            NextBlinkTime = "Off";
-            cancellationTokenSource.Cancel();
-        }
+        int randomDelay = new Random().Next(30000, 60000);
 
-        private static async Task ScheduleJequitiBlink(int delay)
-        {
-            try
-            {
-                await Task.Delay(delay, cancellationTokenSource.Token);
-            }
-            catch (TaskCanceledException)
-            {
-                return;
-            }
+        await Task.Delay(randomDelay);
 
-            if (!UserState.IsConnected)
-            {
-                while (!UserState.IsConnected)
-                {
-                    await Task.Delay(3000);
-                }
+        if (UserState.IsConnected)
+            return;
+        else
+            await WaitForUserActivity();
+    }
 
-                await Task.Delay(30000);
-            }
-
-            await Blink();
-
-            Start();
-        }
-
-        public static async Task Blink()
+    public static async Task Blink()
+    {
+        try
         {
             await Task.Run(async () =>
             {
-                try
+                using JequitiForm form = new();
+
+                if (form.InvokeRequired)
                 {
-                    using JequitiForm form = new();
-
-                    if (form.InvokeRequired)
-                    {
-                        await form.Invoke(async () => await Blink());
-                        return;
-                    }
-
-                    Task.Delay(1000).Wait();
-
-                    form.Visible = true;
-
-                    Task.Delay(50).Wait();
-
-                    form.Visible = false;
+                    await form.Invoke(async () => await Blink());
+                    return;
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+
+                Task.Delay(1000).Wait();
+
+                form.Visible = true;
+
+                Task.Delay(50).Wait();
+
+                form.Visible = false;
             });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
         }
     }
 }
