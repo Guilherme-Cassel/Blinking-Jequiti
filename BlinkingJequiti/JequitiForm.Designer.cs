@@ -55,6 +55,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "JequitiForm";
             Text = "JequitiForm";
+            TopMost = true;
             WindowState = FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

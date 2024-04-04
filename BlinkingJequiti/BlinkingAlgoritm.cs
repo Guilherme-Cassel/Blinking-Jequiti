@@ -78,24 +78,18 @@ public static class BlinkingAlgoritm
     {
         try
         {
-            await Task.Run(async () =>
+            using JequitiForm form = new JequitiForm();
+
+            if (form.InvokeRequired)
             {
-                using JequitiForm form = new();
+                await form.Invoke(async () => await Blink());
+                return;
+            }
 
-                if (form.InvokeRequired)
-                {
-                    await form.Invoke(async () => await Blink());
-                    return;
-                }
-
-                Task.Delay(1000).Wait();
-
-                form.Visible = true;
-
-                Task.Delay(50).Wait();
-
-                form.Visible = false;
-            });
+            await Task.Delay(1000);
+            form.Visible = true;
+            await Task.Delay(100);
+            form.Visible = false;
         }
         catch (Exception ex)
         {
